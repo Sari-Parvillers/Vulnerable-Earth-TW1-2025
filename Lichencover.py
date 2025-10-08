@@ -11,23 +11,23 @@ import matplotlib.pyplot as plt
 plt.style.use('default')
 
 # Specify the directory and file name
-filepath = "data/raw_data/lichen_moss_coverage_data.csv"   # change this to your directory
+filepath = "data/raw_data/LichenMossdata.xlsx"   # change this to your directory
 
 
 # Load the Excel file into a DataFrame
-df = pd.read_csv(filepath)
+df = pd.read_excel(filepath)
 
 # Convert each column into a list
 datalists = [df[col].tolist() for col in df.columns]
 
-#separate data into variables (LISTS)
-sample = datalists[0]
-aspect = datalists[9]
-solar = datalists[10]
-totcover = datalists[3]
-mosscover = datalists[4]
-angle = datalists[1]
-elevation = datalists[11]
+#separate data into variables 
+sample = np.array(datalists[0])
+aspect = np.array(datalists[9])
+solar = np.array(datalists[10])
+totcover = np.array(datalists[3])
+mosscover = np.array(datalists[4])
+angle = np.array(datalists[1])
+elevation = np.array(datalists[11])
 
 #calculate solar radiation times aspect
 solspect = np.array(solar)*np.array(aspect)
@@ -48,7 +48,6 @@ for i, (x, y) in enumerate(zip(aspect, totcover)):
         color='black',          # visible on black background
         ha='center', va='bottom'  # position relative to point
     )
-plt.show()
 plt.show()
 
 # # Plot solar * aspect
@@ -79,14 +78,17 @@ plt.xlabel('Angle (° away from vertical)')
 plt.ylabel('Total moss & lichen cover (%)')
 plt.show()
 
-# # Example: assuming you already have aspect, totcover, and angle lists defined
 
-plt.style.use('dark_background')
+
+
+#plot using additional variable with a colorbar
+
+#plt.style.use('dark_background')
 plt.figure(dpi=300, figsize=(8, 4))
 
-# Set background to black
-plt.rcParams['axes.facecolor'] = 'black'
-plt.rcParams['figure.facecolor'] = 'black'
+# # Set background to black
+# plt.rcParams['axes.facecolor'] = 'black'
+# plt.rcParams['figure.facecolor'] = 'black'
 
 # Create the scatter plot
 scatter = plt.scatter(
@@ -103,11 +105,51 @@ cbar = plt.colorbar(scatter)
 cbar.set_label('Elevation')
 
 # Titles and labels with contrasting colors for visibility
-plt.title('Total cover versus aspect', color='white')
-plt.xlabel('Aspect (° away from N)', color='white')
-plt.ylabel('Total moss & lichen cover (%)', color='white')
+plt.title('Total cover versus aspect, with elevation')
+plt.xlabel('Aspect (° away from N)')
+plt.ylabel('Total moss & lichen cover (%)')
 
 # Set tick and grid colors
-plt.tick_params(colors='white')
+plt.tick_params
 plt.grid(alpha=0.3, color='gray')
+plt.show()
+
+#---------------------------------------------------------
+#Separate data into three groups, low, mid and high elevation
+
+# Separate data into three elevation groups
+mask_elev_1 = elevation < 1400
+mask_elev_2 = (elevation > 1400) & (elevation < 1620)
+mask_elev_3 = (elevation > 1620) & (elevation < 1900)
+
+# Plot total cover vs aspect below 1400m
+plt.figure(dpi=300)
+plt.figure(figsize=(8, 4))
+plt.grid(alpha=0.3)
+plt.scatter(aspect[mask_elev_1], totcover[mask_elev_1], 20, c='maroon')
+plt.title(f'Total cover versus aspect, below 1400m')
+plt.xlabel('Aspect (° away from N)')
+plt.ylabel('Total moss & lichen cover (%)')
+plt.show()
+
+
+# Plot total cover vs aspect between 1400 and 1620m
+plt.figure(dpi=300)
+plt.figure(figsize=(8, 4))
+plt.grid(alpha=0.3)
+plt.scatter(aspect[mask_elev_2], totcover[mask_elev_2], 20, c='maroon')
+plt.title(f'Total cover versus aspect, between 1400 and 1620m')
+plt.xlabel('Aspect (° away from N)')
+plt.ylabel('Total moss & lichen cover (%)')
+plt.show()
+
+
+# Plot total cover vs aspect above 1620m
+plt.figure(dpi=300)
+plt.figure(figsize=(8, 4))
+plt.grid(alpha=0.3)
+plt.scatter(aspect[mask_elev_3], totcover[mask_elev_3], 20, c='maroon')
+plt.title(f'Total cover versus aspect, above 1620m')
+plt.xlabel('Aspect (° away from N)')
+plt.ylabel('Total moss & lichen cover (%)')
 plt.show()
