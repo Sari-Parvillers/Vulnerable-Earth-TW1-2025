@@ -11,14 +11,11 @@ import matplotlib.pyplot as plt
 plt.style.use('default')
 
 # Specify the directory and file name
-directory = r"C:/Users/bowen/Documents/UNI/Vulnerable Earth"   # change this to your directory
-filename = "LichenMossdata.xlsx"
+filepath = "data/raw_data/lichen_moss_coverage_data.csv"   # change this to your directory
 
-# Combine into full file path
-filepath = os.path.join(directory, filename)
 
 # Load the Excel file into a DataFrame
-df = pd.read_excel(filepath)
+df = pd.read_csv(filepath)
 
 # Convert each column into a list
 datalists = [df[col].tolist() for col in df.columns]
