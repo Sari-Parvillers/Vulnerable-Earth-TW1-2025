@@ -1,6 +1,7 @@
 ipykernel
+matplotlib
+numpy
+openpyxl
 pandas
 seaborn
-matplotlib
 spicy
-numpy
